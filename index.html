@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POTASSIUM</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font for that neat aesthetic -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -18,60 +17,58 @@
         </div>
     </div>
 
-    <!-- MAIN UI -->
     <canvas id="hologram"></canvas>
     <div class="scanlines"></div>
 
+    <!-- THE EMBED VIEWPORT (Hidden by default) -->
+    <div id="proxy-viewport">
+        <div class="viewport-header">
+            <button id="back-home">🏠 HOME</button>
+            <div class="address-display" id="current-view">POTASSIUM_SECURE_TUNNEL</div>
+        </div>
+        <iframe id="proxy-frame" src="about:blank"></iframe>
+    </div>
+
+    <!-- MAIN UI -->
     <div class="interface" id="main-ui">
         <button id="settings-trigger" class="icon-btn">⚙️</button>
         
         <div class="terminal">
             <h1 id="logo">POTASSIUM</h1>
-            <div class="sub">GHOST_RELAY_ACTIVE</div>
+            <div class="sub">GHOST_EMBED_ACTIVE</div>
             
             <div class="input-wrap">
-                <input type="text" id="target" placeholder="TYPE_URL_OR_QUERY" autocomplete="off">
+                <input type="text" id="target" placeholder="BROWSE_INSIDE_THE_VOID" autocomplete="off">
             </div>
 
             <div class="stats-bar">
                 <span>USERS_ACTIVE: <b id="user-count">--</b></span>
-                <span>SIGNAL: IONIZED</span>
+                <span>MODE: EMBEDDED</span>
             </div>
         </div>
     </div>
 
-    <!-- SETTINGS PANEL (MODAL) -->
+    <!-- SETTINGS MODAL (Unchanged) -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <button id="close-settings" class="close-btn">&times;</button>
             <h2>SYSTEM_SETTINGS</h2>
-            
             <div class="settings-grid">
-                <!-- Color Customization -->
                 <div class="setting-item">
                     <label>THEME_GRADIENT</label>
                     <input type="color" id="color-primary" value="#5e00ff">
                     <input type="color" id="color-secondary" value="#ff0055">
                 </div>
-
-                <!-- Tab Cloaking -->
                 <div class="setting-item">
                     <label>TAB_CLOAKING</label>
                     <select id="cloak-select">
-                        <option value="default">Default (Potassium)</option>
+                        <option value="default">Default</option>
                         <option value="google">Google Docs</option>
-                        <option value="canvas">Canvas LMS</option>
                         <option value="drive">My Drive</option>
                     </select>
                 </div>
-
-                <!-- Nice Login/Sign Up -->
                 <div class="auth-section">
                     <h3>SECURE_ACCESS</h3>
-                    <div class="auth-tabs">
-                        <button class="auth-btn active">LOGIN</button>
-                        <button class="auth-btn">SIGN_UP</button>
-                    </div>
                     <input type="text" placeholder="IDENTITY_KEY">
                     <input type="password" placeholder="ENCRYPTION_PASS">
                     <button class="submit-auth">AUTHORIZE</button>
