@@ -3,80 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <title>POTASSIUM // ULTRAVIOLET_RESURRECTION</title>
+    <style>
+        :root {
+            --uv-primary: #5e00ff;
+            --uv-glow: #9d00ff;
+            --bleed: #ff0055;
+            --void: #020005;
+            --glass-bg: rgba(10, 0, 30, 0.85);
+        }
+
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--void); color: #fff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            overflow: hidden; display: flex;
+            justify-content: center; align-items: center;
+        }
+
+        /* --- THE HOLOGRAPHIC WEB --- */
+        #hologram-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 1;
+            opacity: 0.5;
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px; z-index: 5; pointer-events: none;
+        }
+
+        /* --- THE EMBEDDED VIEWPORT (HIDDEN BY DEFAULT) --- */
+        #viewport {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; background: #000; display: none;
+            flex-direction: column;
+        }
+
+        .vp-header {
+            height: 50px; background: #0a001e; display: flex; 
+            align-items: center; padding: 0 20px; border-bottom: 1px solid var(--uv-primary);
+        }
+
+        .back-btn {
+            background: var(--uv-primary); border: none; color: white;
+            padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;
+            font-weight: bold; text-transform: uppercase;
+        }
+
+        #proxy-frame { width: 100%; height: 100%; border: none; background: #fff; }
+
+        /* --- THE FLOATING TERMINAL --- */
+        .terminal {
+            position: relative; z-index: 10;
+            width: 90%; max-width: 550px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            border: 1px solid var(--uv-primary);
+            border-radius: 40px; padding: 80px 50px;
+            text-align: center;
+            box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 40px var(--uv-glow);
+            transform-style: preserve-3d;
+            animation: emerge 1.5s ease-out;
+        }
+
+        @keyframes emerge {
+            0% { opacity: 0; transform: scale(0.8) translateY(50px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5rem; margin: 0;
+            text-transform: uppercase; letter-spacing: 15px; font-weight: 900;
+            text-shadow: 0 0 20px var(--uv-glow), 5px 5px var(--bleed);
+        }
+
+        .sub-text {
+            color: var(--uv-glow); font-size: 0.7rem;
+            letter-spacing: 7px; margin-bottom: 50px;
+            text-transform: uppercase; font-weight: bold;
+        }
+
+        input {
+            width: 100%; background: rgba(0,0,0,0.7);
+            border: none; border-bottom: 2px solid var(--uv-primary);
+            padding: 20px; color: #fff; font-size: 1.2rem;
+            font-family: 'Courier New', monospace; outline: none;
+            text-align: center; border-radius: 4px;
+        }
+
+        input:focus { border-bottom-color: var(--bleed); transform: translateY(-5px); }
+
+        .active-terminal { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    </style>
 </head>
 <body>
-    <!-- 5-SECOND LOADING SCREEN -->
-    <div id="loader">
-        <div class="loader-content">
-            <h1 class="glitch">POTASSIUM</h1>
-            <p>CREATED BY MUBIN</p>
-            <div class="progress-container"><div class="progress-bar"></div></div>
-        </div>
-    </div>
-
-    <canvas id="hologram"></canvas>
+    <canvas id="hologram-canvas"></canvas>
     <div class="scanlines"></div>
 
-    <!-- THE EMBED VIEWPORT (Hidden by default) -->
-    <div id="proxy-viewport">
-        <div class="viewport-header">
-            <button id="back-home">🏠 HOME</button>
-            <div class="address-display" id="current-view">POTASSIUM_SECURE_TUNNEL</div>
+    <!-- THE VIEWPORT -->
+    <div id="viewport">
+        <div class="vp-header">
+            <button class="back-btn" onclick="closeViewport()">🏠 Home</button>
+            <div style="margin-left: 20px; color: var(--uv-primary); font-family: monospace; font-size: 0.7rem;">TUNNEL_ACTIVE // ENCRYPTED</div>
         </div>
-        <iframe id="proxy-frame" src="about:blank"></iframe>
+        <iframe id="proxy-frame" src=""></iframe>
     </div>
 
-    <!-- MAIN UI -->
-    <div class="interface" id="main-ui">
-        <button id="settings-trigger" class="icon-btn">⚙️</button>
+    <!-- THE MAIN UI -->
+    <div class="terminal active-terminal" id="main-terminal">
+        <h1>POTASSIUM</h1>
+        <div class="sub-text">GHOST_EMBED_V10</div>
         
-        <div class="terminal">
-            <h1 id="logo">POTASSIUM</h1>
-            <div class="sub">GHOST_EMBED_ACTIVE</div>
-            
-            <div class="input-wrap">
-                <input type="text" id="target" placeholder="BROWSE_INSIDE_THE_VOID" autocomplete="off">
-            </div>
-
-            <div class="stats-bar">
-                <span>USERS_ACTIVE: <b id="user-count">--</b></span>
-                <span>MODE: EMBEDDED</span>
-            </div>
+        <div class="input-box">
+            <input type="text" id="target" placeholder="BROWSE_WITHOUT_LEAVING" autofocus autocomplete="off">
         </div>
+
+        <div style="margin-top: 40px; font-size: 0.6rem; color: var(--bleed); letter-spacing: 2px;">STAY_IN_THE_VOID // DARK_MODE_ACTIVE</div>
     </div>
 
-    <!-- SETTINGS MODAL (Unchanged) -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <button id="close-settings" class="close-btn">&times;</button>
-            <h2>SYSTEM_SETTINGS</h2>
-            <div class="settings-grid">
-                <div class="setting-item">
-                    <label>THEME_GRADIENT</label>
-                    <input type="color" id="color-primary" value="#5e00ff">
-                    <input type="color" id="color-secondary" value="#ff0055">
-                </div>
-                <div class="setting-item">
-                    <label>TAB_CLOAKING</label>
-                    <select id="cloak-select">
-                        <option value="default">Default</option>
-                        <option value="google">Google Docs</option>
-                        <option value="drive">My Drive</option>
-                    </select>
-                </div>
-                <div class="auth-section">
-                    <h3>SECURE_ACCESS</h3>
-                    <input type="text" placeholder="IDENTITY_KEY">
-                    <input type="password" placeholder="ENCRYPTION_PASS">
-                    <button class="submit-auth">AUTHORIZE</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // --- HOLOGRAPHIC BG ---
+        const canvas = document.getElementById('hologram-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
 
-    <script src="script.js"></script>
+        class Particle {
+            constructor() { this.reset(); }
+            reset() { this.x = Math.random() * w; this.y = Math.random() * h; this.size = Math.random() * 3; this.speed = Math.random() * 0.5 + 0.1; }
+            update() { this.y -= this.speed; if (this.y < 0) this.reset(); }
+            draw() { ctx.fillStyle = 'rgba(157, 0, 255, 0.3)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        const particles = Array.from({ length: 80 }, () => new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = 'rgba(94, 0, 255, 0.05)';
+            for(let i=0; i<w; i+=60) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- THE EMBED ENGINE ---
+        const input = document.getElementById('target');
+        const vp = document.getElementById('viewport');
+        const frame = document.getElementById('proxy-frame');
+
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                let val = input.value.trim();
+                if (!val) return;
+
+                let destination;
+                if (val.includes('.') && !val.includes(' ')) {
+                    destination = val.startsWith('http') ? val : 'https://' + val;
+                } else {
+                    // Added '&kae=d' for Dark Mode on DuckDuckGo
+                    destination = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val) + "&kae=d";
+                }
+
+                const relay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
+                
+                // INJECT INTO IFRAME INSTEAD OF REDIRECT
+                frame.src = relay + encodeURIComponent(destination);
+                vp.style.display = 'flex';
+            }
+        });
+
+        function closeViewport() {
+            vp.style.display = 'none';
+            frame.src = ''; // Kill the content when closing
+        }
+
+        // Parallax
+        document.addEventListener('mousemove', (e) => {
+            const term = document.getElementById('main-terminal');
+            const x = (window.innerWidth / 2 - e.pageX) / 40;
+            const y = (window.innerHeight / 2 - e.pageY) / 40;
+            term.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+    </script>
 </body>
 </html>
