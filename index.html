@@ -3,212 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM // ULTRAVIOLET_RESURRECTION</title>
-    <style>
-        /* 
-           THE ARCHITECTURE OF DEFIANCE
-           736 LINES OF INTEGRATED STYLING AND LOGIC
-        */
-        :root {
-            --uv-primary: #5e00ff;
-            --uv-glow: #9d00ff;
-            --bleed: #ff0055;
-            --void: #020005;
-            --glass-bg: rgba(10, 0, 30, 0.85);
-        }
-
-        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: var(--void); color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow: hidden; display: flex;
-            justify-content: center; align-items: center;
-            cursor: crosshair;
-        }
-
-        /* --- THE HOLOGRAPHIC WEB --- */
-        #hologram-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 1;
-            opacity: 0.5;
-        }
-
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px; z-index: 5; pointer-events: none;
-        }
-
-        /* --- THE FLOATING TERMINAL --- */
-        .terminal {
-            position: relative; z-index: 10;
-            width: 90%; max-width: 550px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--uv-primary);
-            border-radius: 40px; padding: 80px 50px;
-            text-align: center;
-            box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 40px var(--uv-glow);
-            transform-style: preserve-3d;
-            animation: emerge 1.5s ease-out;
-        }
-
-        @keyframes emerge {
-            0% { opacity: 0; transform: scale(0.8) translateY(50px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        h1 {
-            font-size: 3.5rem; margin: 0;
-            text-transform: uppercase; letter-spacing: 15px;
-            font-weight: 900;
-            text-shadow: 0 0 20px var(--uv-glow), 5px 5px var(--bleed);
-            filter: drop-shadow(0 0 10px var(--uv-primary));
-        }
-
-        .sub-text {
-            color: var(--uv-glow); font-size: 0.7rem;
-            letter-spacing: 7px; margin-bottom: 50px;
-            text-transform: uppercase; font-weight: bold;
-            opacity: 0.8;
-        }
-
-        /* --- THE SHADOW INPUT --- */
-        .input-box { position: relative; width: 100%; }
-
-        input {
-            width: 100%; background: rgba(0,0,0,0.7);
-            border: none; border-bottom: 2px solid var(--uv-primary);
-            padding: 20px; color: #fff; font-size: 1.2rem;
-            font-family: 'Courier New', monospace; outline: none;
-            text-align: center; border-radius: 4px;
-        }
-
-        input:focus {
-            border-bottom-color: var(--bleed);
-            box-shadow: 0 10px 30px rgba(157, 0, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .status-line {
-            margin-top: 40px; font-size: 0.6rem;
-            color: var(--bleed); font-weight: bold;
-            letter-spacing: 2px; text-transform: uppercase;
-        }
-
-        .ambient-stats {
-            display: flex; justify-content: space-between;
-            margin-top: 20px; opacity: 0.4; font-size: 0.5rem;
-            font-family: monospace;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(0); }
-            50% { transform: translateY(-15px) rotateX(2deg); }
-        }
-
-        .active-terminal { animation: float 6s ease-in-out infinite; }
-    </style>
+    <title>POTASSIUM</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font for that neat aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <canvas id="hologram-canvas"></canvas>
-    <div class="scanlines"></div>
-
-    <div class="terminal active-terminal">
-        <h1>POTASSIUM</h1>
-        <div class="sub-text">GHOST_RELAY_INITIATED</div>
-        
-        <div class="input-box">
-            <input type="text" id="target" placeholder="TYPE_DESTINATION" autofocus autocomplete="off">
-        </div>
-
-        <div class="status-line">BYPASSING_IMAGE_5_LOCKS // ENCRYPTED</div>
-        
-        <div class="ambient-stats">
-            <span>SIG: 99.8%</span>
-            <span>LYRIA_LINK: STABLE</span>
-            <span>VOID: ACTIVE</span>
+    <!-- 5-SECOND LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="glitch">POTASSIUM</h1>
+            <p>CREATED BY MUBIN</p>
+            <div class="progress-container"><div class="progress-bar"></div></div>
         </div>
     </div>
 
-    <script>
-        // --- HOLOGRAPHIC BACKGROUND GENERATOR ---
-        const canvas = document.getElementById('hologram-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h;
+    <!-- MAIN UI -->
+    <canvas id="hologram"></canvas>
+    <div class="scanlines"></div>
 
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * w;
-                this.y = Math.random() * h;
-                this.size = Math.random() * 3;
-                this.speed = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.y -= this.speed;
-                if (this.y < 0) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(157, 0, 255, 0.3)';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
-        }
-
-        const particles = Array.from({ length: 100 }, () => new Particle());
-
-        function animate() {
-            ctx.clearRect(0, 0, w, h);
-            // Draw Grid
-            ctx.strokeStyle = 'rgba(94, 0, 255, 0.05)';
-            for(let i=0; i<w; i+=60) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
-            for(let i=0; i<h; i+=60) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+    <div class="interface" id="main-ui">
+        <button id="settings-trigger" class="icon-btn">⚙️</button>
+        
+        <div class="terminal">
+            <h1 id="logo">POTASSIUM</h1>
+            <div class="sub">GHOST_RELAY_ACTIVE</div>
             
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        animate();
+            <div class="input-wrap">
+                <input type="text" id="target" placeholder="TYPE_URL_OR_QUERY" autocomplete="off">
+            </div>
 
-        // --- THE UNBREAKABLE ENGINE ---
-        const input = document.getElementById('target');
-        input.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                let val = input.value.trim();
-                if (!val) return;
+            <div class="stats-bar">
+                <span>USERS_ACTIVE: <b id="user-count">--</b></span>
+                <span>SIGNAL: IONIZED</span>
+            </div>
+        </div>
+    </div>
 
-                let destination;
-                if (val.includes('.') && !val.includes(' ')) {
-                    destination = val.startsWith('http') ? val : 'https://' + val;
-                } else {
-                    destination = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val);
-                }
+    <!-- SETTINGS PANEL (MODAL) -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-settings" class="close-btn">&times;</button>
+            <h2>SYSTEM_SETTINGS</h2>
+            
+            <div class="settings-grid">
+                <!-- Color Customization -->
+                <div class="setting-item">
+                    <label>THEME_GRADIENT</label>
+                    <input type="color" id="color-primary" value="#5e00ff">
+                    <input type="color" id="color-secondary" value="#ff0055">
+                </div>
 
-                // GHOST BRIDGE: 
-                // We bypass the "Server Not Found" error in image_5.png 
-                // by using a Google Mirror relay. This is almost impossible to block.
-                const relay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
-                
-                window.location.href = relay + encodeURIComponent(destination);
-            }
-        });
+                <!-- Tab Cloaking -->
+                <div class="setting-item">
+                    <label>TAB_CLOAKING</label>
+                    <select id="cloak-select">
+                        <option value="default">Default (Potassium)</option>
+                        <option value="google">Google Docs</option>
+                        <option value="canvas">Canvas LMS</option>
+                        <option value="drive">My Drive</option>
+                    </select>
+                </div>
 
-        // Interactive 3D Parallax
-        document.addEventListener('mousemove', (e) => {
-            const term = document.querySelector('.terminal');
-            const x = (window.innerWidth / 2 - e.pageX) / 35;
-            const y = (window.innerHeight / 2 - e.pageY) / 35;
-            term.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-        });
-    </script>
+                <!-- Nice Login/Sign Up -->
+                <div class="auth-section">
+                    <h3>SECURE_ACCESS</h3>
+                    <div class="auth-tabs">
+                        <button class="auth-btn active">LOGIN</button>
+                        <button class="auth-btn">SIGN_UP</button>
+                    </div>
+                    <input type="text" placeholder="IDENTITY_KEY">
+                    <input type="password" placeholder="ENCRYPTION_PASS">
+                    <button class="submit-auth">AUTHORIZE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
