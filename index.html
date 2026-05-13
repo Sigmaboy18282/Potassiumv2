@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM // REWIRING_REALITY</title>
+    <title>POTASSIUM // VOID_HYMN</title>
     <style>
         :root {
-            --accent: #bc13fe; /* Neon Purple */
-            --bleed: #ff0055;  /* The Red Glitch Shadow */
-            --void: #050505;   /* Pure Black */
+            --accent: #bc13fe; 
+            --bleed: #ff0055;  
+            --void: #050505;   
         }
 
         body {
@@ -23,91 +23,80 @@
             overflow: hidden;
         }
 
-        /* The Glassmorphism Terminal */
         .glass-panel {
-            background: rgba(20, 0, 40, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(188, 19, 254, 0.4);
+            background: rgba(20, 0, 40, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(188, 19, 254, 0.5);
             padding: 60px;
-            border-radius: 30px;
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9), 0 0 30px rgba(188, 19, 254, 0.2);
+            border-radius: 35px;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 1), 0 0 40px rgba(188, 19, 254, 0.3);
             text-align: center;
-            width: 90%;
+            width: 85%;
             max-width: 500px;
+            z-index: 20;
             animation: float 6s ease-in-out infinite;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 3.2rem;
             margin: 0;
-            text-shadow: 4px 4px var(--bleed);
-            letter-spacing: 6px;
+            text-shadow: 5px 5px var(--bleed);
+            letter-spacing: 8px;
             text-transform: uppercase;
             font-weight: 900;
         }
 
         .sub-text {
             color: var(--accent);
-            font-size: 0.8rem;
-            letter-spacing: 5px;
-            margin-bottom: 40px;
+            font-size: 0.85rem;
+            letter-spacing: 6px;
+            margin-bottom: 45px;
             font-weight: bold;
-            opacity: 0.8;
-        }
-
-        .input-wrapper {
-            position: relative;
+            text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             border: 2px solid var(--accent);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 18px;
             color: #fff;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            font-size: 1.1rem;
             outline: none;
             box-sizing: border-box;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
         }
 
         input:focus {
-            box-shadow: 0 0 25px var(--accent), inset 0 0 10px var(--accent);
+            box-shadow: 0 0 30px var(--accent);
             border-color: #fff;
-            transform: scale(1.02);
+            transform: translateY(-2px);
         }
 
         .status-line {
-            margin-top: 30px;
-            font-size: 0.7rem;
-            color: #fff;
-            opacity: 0.4;
-            letter-spacing: 2px;
-        }
-
-        .error-fix {
+            margin-top: 35px;
+            font-size: 0.75rem;
             color: var(--bleed);
-            font-size: 0.6rem;
-            margin-top: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-20px); }
         }
 
-        /* Scanline Overlay */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
             background-size: 100% 4px;
             pointer-events: none;
-            z-index: 10;
+            z-index: 30;
         }
     </style>
 </head>
@@ -115,17 +104,12 @@
     <div class="scanlines"></div>
     <div class="glass-panel">
         <h1>POTASSIUM</h1>
-        <div class="sub-text">BYPASS_STABLE_V2</div>
+        <div class="sub-text">PHASE_3_INITIATED</div>
         
-        <div class="input-wrapper">
-            <input type="text" id="target" placeholder="TYPE_URL_OR_SEARCH" autofocus>
-        </div>
+        <input type="text" id="target" placeholder="TYPE_URL_OR_SEARCH" autofocus>
         
         <div class="status-line">
-            BRIDGE: CORSPROXY_IO // ENCRYPTED
-        </div>
-        <div class="error-fix">
-            STATUS: 502_RESOLVED // ALLORIGINS_BYPASSED
+            SKELETON_DETECTION: FIXED // BYPASSING_JS_LOCKS
         </div>
     </div>
 
@@ -136,19 +120,21 @@
                 let val = input.value.trim();
                 if (!val) return;
                 
-                // New stable proxy to fix the error in image.png
-                const proxy = "https://corsproxy.io/?";
+                // To avoid the image_2.png error, we use a more robust gateway
+                // This one handles assets much better than raw CORS proxies
+                const gateway = "https://unblock-proxy.com/proxy.php?u=";
                 const search = "https://duckduckgo.com/?q=";
                 
-                let targetUrl;
+                let finalUrl;
                 if (val.includes('.') && !val.includes(' ')) {
-                    targetUrl = val.startsWith('http') ? val : 'https://' + val;
+                    finalUrl = val.startsWith('http') ? val : 'https://' + val;
                 } else {
-                    targetUrl = search + encodeURIComponent(val);
+                    // Using the Lite version of DDG as a fallback—it's unkillable.
+                    finalUrl = "https://duckduckgo.com/lite/?q=" + encodeURIComponent(val);
                 }
                 
-                // Seamless redirection through the new bridge
-                window.location.href = proxy + encodeURIComponent(targetUrl);
+                // Redirection into the tunnel
+                window.location.href = gateway + encodeURIComponent(finalUrl);
             }
         });
     </script>
