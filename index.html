@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POTASSIUM // VIOLET_VOID</title>
+    <style>
+        :root {
+            --accent: #bc13fe; /* Neon Purple */
+            --bleed: #ff0055;  /* The Red Glitch */
+            --void: #050505;   /* Pure Black */
+        }
+
+        body {
+            /* The deep gradient you asked for */
+            background: radial-gradient(circle at center, #1a0033 0%, var(--void) 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(20, 0, 40, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(188, 19, 254, 0.1);
+            text-align: center;
+            width: 450px;
+        }
+
+        h1 {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 2.5rem;
+            margin: 0;
+            color: #fff;
+            /* Maintaining the red bleed as a shadow */
+            text-shadow: 4px 4px var(--bleed);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .sub-text {
+            color: var(--accent);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--accent);
+            border-radius: 5px;
+            padding: 12px;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            box-shadow: 0 0 15px var(--accent);
+            border-color: #fff;
+        }
+
+        .footer-note {
+            margin-top: 25px;
+            font-size: 0.6rem;
+            opacity: 0.5;
+            color: #fff;
+        }
+
+        /* Subtle floating animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .glass-panel { animation: float 6s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+    <div class="glass-panel">
+        <h1>POTASSIUM</h1>
+        <div class="sub-text">NEUTRALIZING_FILTERS</div>
+        
+        <div class="input-wrapper">
+            <input type="text" id="target" placeholder="TARGET_URL_OR_QUERY" autofocus>
+        </div>
+        
+        <div class="footer-note">
+            ENCRYPTED_TUNNEL: ACTIVE // ENGINE: DUCKDUCKGO
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('target');
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                let val = input.value;
+                if (!val) return;
+                
+                // Using a reliable public proxy bridge
+                let proxy = "https://api.allorigins.win/raw?url=";
+                let searchEngine = "https://duckduckgo.com/?q=";
+                
+                let finalUrl = val.includes('.') ? 
+                    (val.startsWith('http') ? val : 'https://' + val) : 
+                    searchEngine + encodeURIComponent(val);
+                
+                window.location.href = proxy + encodeURIComponent(finalUrl);
+            }
+        });
+    </script>
+</body>
+</html>
