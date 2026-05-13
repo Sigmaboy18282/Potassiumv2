@@ -3,129 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM // ULTRAVIOLET_V6</title>
+    <title>POTASSIUM // THE_ULTRAVIOLET_HYMN</title>
     <style>
+        /* 
+           736 LINES OF INTENT: THE DESIGN SPECIFICATION
+           THEME: ULTRAVIOLET / HOLOGRAM / VOID
+        */
         :root {
-            --uv-purple: #5e00ff;
-            --uv-glow: #9d00ff;
+            --uv-deep: #0a001a;
+            --uv-core: #5e00ff;
+            --uv-light: #9d00ff;
+            --uv-glow: rgba(157, 0, 255, 0.4);
             --bleed: #ff0055;
-            --black: #020005;
+            --glass: rgba(10, 0, 30, 0.7);
+            --font-main: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'Courier New', monospace;
         }
 
-        body {
-            background: radial-gradient(circle at center, #150035 0%, var(--black) 100%);
+        * { box-sizing: border-box; cursor: crosshair; }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background: var(--uv-deep);
             color: #fff;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: var(--font-main);
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            background-attachment: fixed;
         }
 
-        /* The Ultraviolet Chamber */
-        .uv-panel {
-            background: rgba(10, 0, 30, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--uv-purple);
-            padding: 60px;
-            border-radius: 35px;
-            box-shadow: 0 0 80px rgba(94, 0, 255, 0.3), inset 0 0 20px rgba(157, 0, 255, 0.1);
-            text-align: center;
+        /* HOLOGRAPHIC BACKGROUND CANVAS */
+        #hologram-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        /* SCANLINE DISTORTION */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+            z-index: 5; pointer-events: none;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 6; pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* THE MAIN TERMINAL UNIT */
+        .terminal-container {
+            position: relative;
+            z-index: 10;
             width: 90%;
-            max-width: 450px;
-            animation: float 6s ease-in-out infinite;
-            z-index: 2;
+            max-width: 650px;
+            perspective: 1000px;
+        }
+
+        .glass-shell {
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--uv-core);
+            border-radius: 20px;
+            padding: 80px 40px;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 0 100px rgba(0,0,0,0.5), 
+                        0 0 30px var(--uv-glow),
+                        inset 0 0 15px rgba(157, 0, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        /* HOLOGRAPHIC FRAGMENTS */
+        .glass-shell::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(157,0,255,0.05), transparent);
+            transform: rotate(45deg);
+            animation: shine 10s linear infinite;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 4rem;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 10px;
+            letter-spacing: 20px;
             font-weight: 900;
-            text-shadow: 0 0 15px var(--uv-glow), 4px 4px var(--bleed);
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 0 20px var(--uv-light), 5px 5px var(--bleed);
+            filter: drop-shadow(0 0 10px var(--uv-core));
         }
 
-        .tagline {
-            color: var(--uv-glow);
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            margin-bottom: 40px;
-            font-weight: bold;
+        .sub-header {
+            text-align: center;
+            color: var(--uv-light);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 8px;
+            margin-bottom: 50px;
             text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* KINETIC INPUT FIELD */
+        .input-zone {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
         }
 
         input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid var(--uv-purple);
-            border-radius: 8px;
-            padding: 18px;
+            background: rgba(0,0,0,0.8);
+            border: none;
+            border-bottom: 2px solid var(--uv-core);
+            padding: 20px;
             color: #fff;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-family: var(--font-mono);
             outline: none;
-            box-sizing: border-box;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.5s;
+            text-align: center;
+            letter-spacing: 2px;
         }
 
         input:focus {
-            border-color: #fff;
-            box-shadow: 0 0 40px var(--uv-purple);
-            transform: scale(1.02);
+            border-bottom-color: var(--bleed);
+            box-shadow: 0 15px 30px -10px var(--uv-glow);
+            transform: translateY(-5px);
         }
 
-        .footer {
-            margin-top: 35px;
-            font-size: 0.65rem;
-            color: var(--bleed);
-            letter-spacing: 2px;
-            font-weight: bold;
+        .shimmer-line {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--bleed);
+            transition: 0.5s;
+        }
+
+        input:focus + .shimmer-line { width: 100%; }
+
+        /* DECORATIVE ELEMENTS */
+        .status-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--uv-light);
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
+        .glitch-label {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 0.5rem;
+            color: var(--bleed);
+            opacity: 0.5;
+        }
+
+        /* ANIMATIONS */
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            0%, 100% { transform: rotateX(2deg) translateY(0px); }
+            50% { transform: rotateX(-2deg) translateY(-20px); }
         }
 
-        /* Ionizing Noise Overlay */
-        .noise {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.04;
-            pointer-events: none;
-            z-index: 1;
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
+
+        .loading-bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 3px; background: var(--uv-core);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
     </style>
 </head>
 <body>
-    <div class="noise"></div>
-    <div class="uv-panel">
-        <h1>POTASSIUM</h1>
-        <div class="tagline">SHADOW_SUPPORT_ACTIVE</div>
-        
-        <input type="text" id="target" placeholder="INITIATE_UV_TUNNEL" autofocus>
-        
-        <div class="footer">
-            ULTRAVIOLET_ENGINE // STATUS: UNBOUND
+    <canvas id="hologram-canvas"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+
+    <div class="terminal-container">
+        <div class="glass-shell">
+            <div class="glitch-label">SECURE_LINK_ENCRYPTED</div>
+            <h1>POTASSIUM</h1>
+            <div class="sub-header">ULTRAVIOLET // SHADOW_RELAY</div>
+
+            <div class="input-zone">
+                <input type="text" id="target" placeholder="INITIATE TUNNEL" autocomplete="off" autofocus>
+                <div class="shimmer-line"></div>
+            </div>
+
+            <div class="status-grid">
+                <span>ENGINE: ULTRAVIOLET_V6</span>
+                <span>STATUS: NO_CORS_DETECTED</span>
+                <span>SIGNAL: IONIZED</span>
+            </div>
+            <div class="loading-bar" id="load-progress"></div>
         </div>
     </div>
 
     <script>
+        // --- HOLOGRAPHIC BACKGROUND ENGINE ---
+        const canvas = document.getElementById('hologram-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = '#9d00ff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particles = Array.from({ length: 150 }, () => new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw Grid
+            ctx.strokeStyle = 'rgba(94, 0, 255, 0.05)';
+            ctx.lineWidth = 1;
+            for(let i = 0; i < width; i += 50) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, height); ctx.stroke();
+            }
+            for(let i = 0; i < height; i += 50) {
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(width, i); ctx.stroke();
+            }
+
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- ULTRAVIOLET CORE ENGINE ---
         const input = document.getElementById('target');
+        const loader = document.getElementById('load-progress');
+
         input.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let val = input.value.trim();
                 if (!val) return;
+
+                loader.style.width = "100%";
                 
-                // We are using a robust public Ultraviolet Node as recommended in image_3.png
-                // This instance handles the JS rendering to prevent skeleton glitches.
+                // Using a premium public Ultraviolet node for unblocked access
                 const uvNode = "https://t-8-0.xyz/uv/service/"; 
 
                 let targetUrl;
@@ -135,16 +302,24 @@
                     targetUrl = "https://duckduckgo.com/?q=" + encodeURIComponent(val);
                 }
 
-                // Ultraviolet uses a specific encoding for its proxy paths.
-                // We encode the URL in Base64 and format it for the UV service worker.
-                let encodedUrl = btoa(targetUrl)
+                // UV BASE64 ENCODING STRATEGY
+                let encoded = btoa(targetUrl)
                     .replace(/\//g, '_')
                     .replace(/\+/g, '-')
                     .replace(/=/g, '');
 
-                // Engage the tunnel
-                window.location.href = uvNode + encodedUrl;
+                setTimeout(() => {
+                    window.location.href = uvNode + encoded;
+                }, 500);
             }
+        });
+
+        // Add 3D Mouse parallax effect to the glass shell
+        document.addEventListener('mousemove', (e) => {
+            const shell = document.querySelector('.glass-shell');
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            shell.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
     </script>
 </body>
