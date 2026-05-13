@@ -3,195 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM // ULTRAVIOLET_RESURRECTION</title>
+    <title>POTASSIUM // ULTRA_STAY_DARK</title>
     <style>
         :root {
             --uv-primary: #5e00ff;
             --uv-glow: #9d00ff;
             --bleed: #ff0055;
             --void: #020005;
-            --glass-bg: rgba(10, 0, 30, 0.85);
+            --glass-bg: rgba(10, 0, 30, 0.9);
         }
 
-        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: var(--void); color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow: hidden; display: flex;
-            justify-content: center; align-items: center;
+            font-family: 'Segoe UI', sans-serif; overflow: hidden;
         }
 
-        /* --- THE HOLOGRAPHIC WEB --- */
-        #hologram-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 1;
-            opacity: 0.5;
-        }
+        /* --- THE HOLOGRAPHIC BACKGROUND --- */
+        #hologram-canvas { position: absolute; inset: 0; z-index: 1; opacity: 0.4; }
 
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px; z-index: 5; pointer-events: none;
-        }
-
-        /* --- EMBEDDED VIEWPORT --- */
+        /* --- PERSISTENT PROXY VIEWPORT --- */
         #proxy-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1000; background: var(--void);
-            display: none; flex-direction: column;
+            position: fixed; inset: 0; z-index: 1000;
+            background: var(--void); display: none; flex-direction: column;
         }
 
         .proxy-header {
             height: 50px; background: #0a001e; border-bottom: 1px solid var(--uv-primary);
-            display: flex; align-items: center; padding: 0 20px; gap: 20px;
+            display: flex; align-items: center; padding: 0 20px; justify-content: space-between;
         }
 
         .exit-btn {
             background: var(--bleed); border: none; color: #fff;
-            padding: 5px 15px; border-radius: 5px; cursor: pointer;
-            font-weight: bold; font-size: 0.7rem; letter-spacing: 1px;
+            padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;
         }
 
-        #proxy-frame { flex: 1; border: none; width: 100%; height: 100%; background: #fff; }
+        #proxy-frame { flex: 1; border: none; background: #fff; }
 
-        /* --- THE FLOATING TERMINAL --- */
+        /* --- MAIN TERMINAL UI --- */
+        .interface {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 10; perspective: 1000px;
+        }
+
         .terminal {
-            position: relative; z-index: 10;
-            width: 90%; max-width: 550px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--uv-primary);
-            border-radius: 40px; padding: 80px 50px;
-            text-align: center;
-            box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 40px var(--uv-glow);
-            transform-style: preserve-3d;
-            animation: emerge 1.5s ease-out;
+            background: var(--glass-bg); backdrop-filter: blur(30px);
+            border: 1px solid var(--uv-primary); border-radius: 40px;
+            padding: 60px 40px; text-align: center; width: 90%; max-width: 550px;
+            box-shadow: 0 0 50px var(--uv-glow);
         }
 
-        @keyframes emerge {
-            0% { opacity: 0; transform: scale(0.8) translateY(50px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        h1 {
-            font-size: 3.5rem; margin: 0;
-            text-transform: uppercase; letter-spacing: 15px;
-            font-weight: 900;
-            text-shadow: 0 0 20px var(--uv-glow), 5px 5px var(--bleed);
-        }
-
-        .sub-text {
-            color: var(--uv-glow); font-size: 0.7rem;
-            letter-spacing: 7px; margin-bottom: 50px;
-            text-transform: uppercase; font-weight: bold;
-        }
+        h1 { font-size: 3rem; letter-spacing: 12px; margin: 0; text-shadow: 0 0 15px var(--uv-glow); }
+        .sub { font-size: 0.7rem; color: var(--uv-primary); margin-bottom: 40px; letter-spacing: 4px; }
 
         input {
-            width: 100%; background: rgba(0,0,0,0.7);
-            border: none; border-bottom: 2px solid var(--uv-primary);
-            padding: 20px; color: #fff; font-size: 1.2rem;
-            font-family: 'Courier New', monospace; outline: none;
-            text-align: center; border-radius: 4px;
+            width: 100%; background: rgba(0,0,0,0.8); border: none;
+            border-bottom: 2px solid var(--uv-primary); padding: 15px;
+            color: #fff; font-size: 1.2rem; text-align: center; outline: none;
         }
 
-        input:focus { border-bottom-color: var(--bleed); transform: translateY(-5px); }
+        input:focus { border-bottom-color: var(--bleed); box-shadow: 0 5px 15px rgba(157, 0, 255, 0.2); }
 
-        .active-terminal { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        /* --- LOADING OVERLAY --- */
+        #loader {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(0,0,0,0.8); align-items: center; justify-content: center;
+            font-family: monospace; color: var(--uv-primary);
+        }
     </style>
 </head>
 <body>
-    <canvas id="hologram-canvas"></canvas>
-    <div class="scanlines"></div>
 
-    <!-- PERSISTENT PROXY VIEWPORT -->
+    <canvas id="hologram-canvas"></canvas>
+
+    <div id="loader">INITIALIZING_GHOST_TUNNEL...</div>
+
     <div id="proxy-container">
         <div class="proxy-header">
             <button class="exit-btn" onclick="closeProxy()">DISCONNECT</button>
-            <div id="proxy-status" style="font-size: 0.6rem; color: var(--uv-primary); font-family: monospace;">TUNNEL_STABLE // 0_LEAKS</div>
+            <span id="url-display" style="font-size:0.6rem; color:var(--uv-primary); font-family:monospace;"></span>
+            <div style="color: #444; font-size: 0.6rem;">POTASSIUM_V2</div>
         </div>
-        <iframe id="proxy-frame" src=""></iframe>
+        <iframe id="proxy-frame"></iframe>
     </div>
 
-    <div class="terminal active-terminal" id="main-ui">
-        <h1>POTASSIUM</h1>
-        <div class="sub-text">EMBEDDED_DARK_MODE</div>
-        
-        <div class="input-box">
-            <input type="text" id="target" placeholder="TYPE_DESTINATION" autofocus autocomplete="off">
+    <div class="interface">
+        <div class="terminal" id="main-ui">
+            <h1>POTASSIUM</h1>
+            <div class="sub">BYPASS_ENGINE_STABLE</div>
+            <input type="text" id="target" placeholder="TYPE_URL_OR_SEARCH" autofocus autocomplete="off">
+            <div style="margin-top: 30px; font-size: 0.5rem; color: var(--bleed);">IF_WHITE_SCREEN_WAIT_5_SECONDS</div>
         </div>
-
-        <div style="margin-top: 40px; font-size: 0.6rem; color: var(--bleed); font-weight: bold; letter-spacing: 2px;">STAY_IN_THE_VOID // NO_NEW_TABS</div>
     </div>
 
     <script>
-        // --- HOLOGRAPHIC BACKGROUND ---
+        // --- ANIMATED BACKGROUND ---
         const canvas = document.getElementById('hologram-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h;
-        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
-        resize();
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        window.onresize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
 
-        class Particle {
-            constructor() { this.reset(); }
-            reset() { this.x = Math.random() * w; this.y = Math.random() * h; this.size = Math.random() * 3; this.speed = Math.random() * 0.5 + 0.1; }
-            update() { this.y -= this.speed; if (this.y < 0) this.reset(); }
-            draw() { ctx.fillStyle = 'rgba(157, 0, 255, 0.3)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
-        }
-        const particles = Array.from({ length: 80 }, () => new Particle());
-
-        function animate() {
+        function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = 'rgba(94, 0, 255, 0.05)';
-            for(let i=0; i<w; i+=60) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+            ctx.strokeStyle = 'rgba(94, 0, 255, 0.1)';
+            for(let i=0; i<w; i+=80) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,h); ctx.stroke(); }
+            requestAnimationFrame(draw);
         }
-        animate();
+        draw();
 
-        // --- THE EMBED ENGINE ---
+        // --- BYPASS LOGIC ---
         const input = document.getElementById('target');
-        const proxyContainer = document.getElementById('proxy-container');
-        const proxyFrame = document.getElementById('proxy-frame');
+        const container = document.getElementById('proxy-container');
+        const frame = document.getElementById('proxy-frame');
+        const loader = document.getElementById('loader');
+        const urlDisp = document.getElementById('url-display');
 
-        input.addEventListener('keypress', function (e) {
+        input.onkeypress = (e) => {
             if (e.key === 'Enter') {
                 let val = input.value.trim();
                 if (!val) return;
 
-                let destination;
+                loader.style.display = 'flex';
+                
+                let dest;
                 if (val.includes('.') && !val.includes(' ')) {
-                    destination = val.startsWith('http') ? val : 'https://' + val;
+                    dest = val.startsWith('http') ? val : 'https://' + val;
                 } else {
-                    // kae=d forces DuckDuckGo into Dark Mode
-                    destination = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val) + "&kae=d";
+                    // Using Bing as search mirror because it has fewer captchas than Google
+                    dest = "https://www.bing.com/search?q=" + encodeURIComponent(val);
                 }
 
-                // GHOST BRIDGE RELAY
+                // PRIMARY RELAY: Google Translate (Most stable for school filters)
                 const relay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
                 
-                // Set the frame source and reveal the container
-                proxyFrame.src = relay + encodeURIComponent(destination);
-                proxyContainer.style.display = 'flex';
+                frame.src = relay + encodeURIComponent(dest);
+                urlDisp.innerText = "TUNNEL_ACTIVE: " + val;
+
+                // Wait for the iframe to load then hide loader
+                frame.onload = () => {
+                    loader.style.display = 'none';
+                    container.style.display = 'flex';
+                };
             }
-        });
+        };
 
         function closeProxy() {
-            proxyContainer.style.display = 'none';
-            proxyFrame.src = ""; // Kill the site process
+            container.style.display = 'none';
+            frame.src = "";
             input.value = "";
             input.focus();
         }
 
-        // Parallax Effect
+        // Parallax Move
         document.addEventListener('mousemove', (e) => {
             const term = document.getElementById('main-ui');
-            const x = (window.innerWidth / 2 - e.pageX) / 40;
-            const y = (window.innerHeight / 2 - e.pageY) / 40;
+            const x = (window.innerWidth / 2 - e.pageX) / 45;
+            const y = (window.innerHeight / 2 - e.pageY) / 45;
             term.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
         });
     </script>
