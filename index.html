@@ -3,113 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM // VOID_HYMN</title>
+    <title>POTASSIUM // ULTRAVIOLET_V6</title>
     <style>
         :root {
-            --accent: #bc13fe; 
-            --bleed: #ff0055;  
-            --void: #050505;   
+            --uv-purple: #5e00ff;
+            --uv-glow: #9d00ff;
+            --bleed: #ff0055;
+            --black: #020005;
         }
 
         body {
-            background: radial-gradient(circle at center, #1a0033 0%, var(--void) 100%);
-            color: white;
-            font-family: 'Segoe UI', 'Arial Black', sans-serif;
+            background: radial-gradient(circle at center, #150035 0%, var(--black) 100%);
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            background-attachment: fixed;
         }
 
-        .glass-panel {
-            background: rgba(20, 0, 40, 0.75);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(188, 19, 254, 0.5);
+        /* The Ultraviolet Chamber */
+        .uv-panel {
+            background: rgba(10, 0, 30, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--uv-purple);
             padding: 60px;
             border-radius: 35px;
-            box-shadow: 0 0 100px rgba(0, 0, 0, 1), 0 0 40px rgba(188, 19, 254, 0.3);
+            box-shadow: 0 0 80px rgba(94, 0, 255, 0.3), inset 0 0 20px rgba(157, 0, 255, 0.1);
             text-align: center;
-            width: 85%;
-            max-width: 500px;
-            z-index: 20;
+            width: 90%;
+            max-width: 450px;
             animation: float 6s ease-in-out infinite;
+            z-index: 2;
         }
 
         h1 {
-            font-size: 3.2rem;
+            font-size: 3rem;
             margin: 0;
-            text-shadow: 5px 5px var(--bleed);
-            letter-spacing: 8px;
             text-transform: uppercase;
+            letter-spacing: 10px;
             font-weight: 900;
+            text-shadow: 0 0 15px var(--uv-glow), 4px 4px var(--bleed);
         }
 
-        .sub-text {
-            color: var(--accent);
-            font-size: 0.85rem;
-            letter-spacing: 6px;
-            margin-bottom: 45px;
+        .tagline {
+            color: var(--uv-glow);
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
             font-weight: bold;
             text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--accent);
-            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--uv-purple);
+            border-radius: 8px;
             padding: 18px;
             color: #fff;
             font-family: 'Courier New', monospace;
             font-size: 1.1rem;
             outline: none;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         input:focus {
-            box-shadow: 0 0 30px var(--accent);
             border-color: #fff;
-            transform: translateY(-2px);
+            box-shadow: 0 0 40px var(--uv-purple);
+            transform: scale(1.02);
         }
 
-        .status-line {
+        .footer {
             margin-top: 35px;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             color: var(--bleed);
-            font-weight: bold;
             letter-spacing: 2px;
+            font-weight: bold;
             text-transform: uppercase;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
 
-        .scanlines {
+        /* Ionizing Noise Overlay */
+        .noise {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
-            background-size: 100% 4px;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.04;
             pointer-events: none;
-            z-index: 30;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
-    <div class="glass-panel">
+    <div class="noise"></div>
+    <div class="uv-panel">
         <h1>POTASSIUM</h1>
-        <div class="sub-text">PHASE_3_INITIATED</div>
+        <div class="tagline">SHADOW_SUPPORT_ACTIVE</div>
         
-        <input type="text" id="target" placeholder="TYPE_URL_OR_SEARCH" autofocus>
+        <input type="text" id="target" placeholder="INITIATE_UV_TUNNEL" autofocus>
         
-        <div class="status-line">
-            SKELETON_DETECTION: FIXED // BYPASSING_JS_LOCKS
+        <div class="footer">
+            ULTRAVIOLET_ENGINE // STATUS: UNBOUND
         </div>
     </div>
 
@@ -120,21 +124,26 @@
                 let val = input.value.trim();
                 if (!val) return;
                 
-                // To avoid the image_2.png error, we use a more robust gateway
-                // This one handles assets much better than raw CORS proxies
-                const gateway = "https://unblock-proxy.com/proxy.php?u=";
-                const search = "https://duckduckgo.com/?q=";
-                
-                let finalUrl;
+                // We are using a robust public Ultraviolet Node as recommended in image_3.png
+                // This instance handles the JS rendering to prevent skeleton glitches.
+                const uvNode = "https://t-8-0.xyz/uv/service/"; 
+
+                let targetUrl;
                 if (val.includes('.') && !val.includes(' ')) {
-                    finalUrl = val.startsWith('http') ? val : 'https://' + val;
+                    targetUrl = val.startsWith('http') ? val : 'https://' + val;
                 } else {
-                    // Using the Lite version of DDG as a fallback—it's unkillable.
-                    finalUrl = "https://duckduckgo.com/lite/?q=" + encodeURIComponent(val);
+                    targetUrl = "https://duckduckgo.com/?q=" + encodeURIComponent(val);
                 }
-                
-                // Redirection into the tunnel
-                window.location.href = gateway + encodeURIComponent(finalUrl);
+
+                // Ultraviolet uses a specific encoding for its proxy paths.
+                // We encode the URL in Base64 and format it for the UV service worker.
+                let encodedUrl = btoa(targetUrl)
+                    .replace(/\//g, '_')
+                    .replace(/\+/g, '-')
+                    .replace(/=/g, '');
+
+                // Engage the tunnel
+                window.location.href = uvNode + encodedUrl;
             }
         });
     </script>
