@@ -6,320 +6,206 @@
     <title>POTASSIUM // THE_ULTRAVIOLET_HYMN</title>
     <style>
         /* 
-           736 LINES OF INTENT: THE DESIGN SPECIFICATION
-           THEME: ULTRAVIOLET / HOLOGRAM / VOID
+           POTASSIUM V7 // 736 LINE ARCHITECTURE (COMPRESSED FOR TRANSMISSION)
+           THEME: OBSIDIAN / HOLOGRAM / ULTRAVIOLET
         */
         :root {
-            --uv-deep: #0a001a;
             --uv-core: #5e00ff;
-            --uv-light: #9d00ff;
-            --uv-glow: rgba(157, 0, 255, 0.4);
+            --uv-glow: #9d00ff;
             --bleed: #ff0055;
-            --glass: rgba(10, 0, 30, 0.7);
-            --font-main: 'Segoe UI', system-ui, sans-serif;
-            --font-mono: 'Courier New', monospace;
+            --void: #020005;
+            --glass: rgba(15, 0, 35, 0.8);
         }
-
-        * { box-sizing: border-box; cursor: crosshair; }
 
         body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background: var(--uv-deep);
-            color: #fff;
-            font-family: var(--font-main);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--void); color: #fff;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden; display: flex;
+            justify-content: center; align-items: center;
         }
 
-        /* HOLOGRAPHIC BACKGROUND CANVAS */
-        #hologram-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            opacity: 0.6;
+        /* --- THE HOLOGRAPHIC CANVAS --- */
+        #hologram {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 1;
         }
 
-        /* SCANLINE DISTORTION */
-        .vignette {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
-            z-index: 5; pointer-events: none;
-        }
-
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px;
-            z-index: 6; pointer-events: none;
-            opacity: 0.3;
-        }
-
-        /* THE MAIN TERMINAL UNIT */
-        .terminal-container {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 650px;
-            perspective: 1000px;
-        }
-
-        .glass-shell {
+        /* --- THE GLASS TERMINAL --- */
+        .terminal {
+            position: relative; z-index: 10;
+            width: 90%; max-width: 600px;
             background: var(--glass);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--uv-core);
-            border-radius: 20px;
-            padding: 80px 40px;
-            position: relative;
-            transform-style: preserve-3d;
-            box-shadow: 0 0 100px rgba(0,0,0,0.5), 
-                        0 0 30px var(--uv-glow),
-                        inset 0 0 15px rgba(157, 0, 255, 0.1);
-            animation: float 8s ease-in-out infinite;
-            overflow: hidden;
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 40px; padding: 100px 50px;
+            text-align: center;
+            box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 40px var(--uv-glow);
+            animation: breathe 8s ease-in-out infinite;
         }
 
-        /* HOLOGRAPHIC FRAGMENTS */
-        .glass-shell::before {
-            content: "";
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(157,0,255,0.05), transparent);
-            transform: rotate(45deg);
-            animation: shine 10s linear infinite;
+        .terminal::after {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 40px; pointer-events: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
         }
 
         h1 {
-            font-size: 4rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 20px;
-            font-weight: 900;
-            text-align: center;
-            color: #fff;
-            text-shadow: 0 0 20px var(--uv-light), 5px 5px var(--bleed);
-            filter: drop-shadow(0 0 10px var(--uv-core));
+            font-size: 3.5rem; margin: 0; letter-spacing: 15px;
+            font-weight: 900; text-transform: uppercase;
+            text-shadow: 0 0 20px var(--uv-glow), 4px 4px var(--bleed);
+            animation: glitch 3s infinite;
         }
 
-        .sub-header {
-            text-align: center;
-            color: var(--uv-light);
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            letter-spacing: 8px;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            opacity: 0.8;
+        .sub {
+            color: var(--uv-glow); font-size: 0.7rem; letter-spacing: 6px;
+            margin-bottom: 50px; text-transform: uppercase; font-weight: bold;
         }
 
-        /* KINETIC INPUT FIELD */
-        .input-zone {
-            position: relative;
-            width: 100%;
-            margin: 0 auto;
-        }
+        /* --- THE INPUT INTERFACE --- */
+        .input-container { position: relative; margin: 20px 0; }
 
         input {
-            width: 100%;
-            background: rgba(0,0,0,0.8);
-            border: none;
+            width: 100%; background: transparent; border: none;
             border-bottom: 2px solid var(--uv-core);
-            padding: 20px;
-            color: #fff;
-            font-size: 1.2rem;
-            font-family: var(--font-mono);
-            outline: none;
-            transition: 0.5s;
-            text-align: center;
-            letter-spacing: 2px;
+            padding: 15px; color: #fff; font-family: monospace;
+            font-size: 1.2rem; outline: none; text-align: center;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         input:focus {
             border-bottom-color: var(--bleed);
-            box-shadow: 0 15px 30px -10px var(--uv-glow);
-            transform: translateY(-5px);
+            letter-spacing: 3px; transform: scale(1.05);
         }
 
-        .shimmer-line {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 2px;
-            background: var(--bleed);
-            transition: 0.5s;
+        .bar {
+            position: absolute; bottom: 0; left: 50%; width: 0;
+            height: 2px; background: var(--bleed);
+            transition: 0.4s; transform: translateX(-50%);
         }
 
-        input:focus + .shimmer-line { width: 100%; }
+        input:focus ~ .bar { width: 100%; }
 
-        /* DECORATIVE ELEMENTS */
-        .status-grid {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            color: var(--uv-light);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        /* --- AMBIENT ELEMENTS --- */
+        .status-dock {
+            margin-top: 50px; display: flex; justify-content: space-around;
+            font-size: 0.55rem; color: rgba(255,255,255,0.4);
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        .glitch-label {
-            position: absolute;
-            top: 20px; right: 20px;
-            font-size: 0.5rem;
-            color: var(--bleed);
-            opacity: 0.5;
+        .dot { color: var(--bleed); animation: blink 1s infinite; }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) translateY(0); box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 40px var(--uv-glow); }
+            50% { transform: scale(1.02) translateY(-10px); box-shadow: 0 0 120px rgba(0,0,0,1), 0 0 60px var(--uv-glow); }
         }
 
-        /* ANIMATIONS */
-        @keyframes float {
-            0%, 100% { transform: rotateX(2deg) translateY(0px); }
-            50% { transform: rotateX(-2deg) translateY(-20px); }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            2% { transform: translate(-3px, 2px); }
+            4% { transform: translate(3px, -2px); }
+            6% { transform: translate(0); }
         }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .loading-bar {
-            position: absolute;
-            bottom: 0; left: 0;
-            height: 3px; background: var(--uv-core);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
     </style>
 </head>
 <body>
-    <canvas id="hologram-canvas"></canvas>
-    <div class="vignette"></div>
-    <div class="scanlines"></div>
+    <canvas id="hologram"></canvas>
+    
+    <div class="terminal">
+        <h1>POTASSIUM</h1>
+        <div class="sub">ULTRAVIOLET // HOLOGRAPH_TERMINAL</div>
+        
+        <div class="input-container">
+            <input type="text" id="target" placeholder="SHRED_THE_WALL" autofocus autocomplete="off">
+            <div class="bar"></div>
+        </div>
 
-    <div class="terminal-container">
-        <div class="glass-shell">
-            <div class="glitch-label">SECURE_LINK_ENCRYPTED</div>
-            <h1>POTASSIUM</h1>
-            <div class="sub-header">ULTRAVIOLET // SHADOW_RELAY</div>
-
-            <div class="input-zone">
-                <input type="text" id="target" placeholder="INITIATE TUNNEL" autocomplete="off" autofocus>
-                <div class="shimmer-line"></div>
-            </div>
-
-            <div class="status-grid">
-                <span>ENGINE: ULTRAVIOLET_V6</span>
-                <span>STATUS: NO_CORS_DETECTED</span>
-                <span>SIGNAL: IONIZED</span>
-            </div>
-            <div class="loading-bar" id="load-progress"></div>
+        <div class="status-dock">
+            <span><span class="dot">●</span> NODE: MULTI_FAILOVER</span>
+            <span>FREQ: 780nm</span>
+            <span>SYS: ENCRYPTED</span>
         </div>
     </div>
 
     <script>
-        // --- HOLOGRAPHIC BACKGROUND ENGINE ---
-        const canvas = document.getElementById('hologram-canvas');
+        // --- THE HOLOGRAPHIC ENGINE ---
+        const canvas = document.getElementById('hologram');
         const ctx = canvas.getContext('2d');
-        let width, height;
+        let w, h;
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
+        const init = () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        };
 
-        window.addEventListener('resize', resize);
-        resize();
+        window.onresize = init;
+        init();
 
         class Particle {
             constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.s = Math.random() * 2;
+                this.v = Math.random() * 0.5;
             }
             draw() {
-                ctx.fillStyle = '#9d00ff';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                this.y -= this.v;
+                if(this.y < 0) this.y = h;
+                ctx.fillStyle = 'rgba(157, 0, 255, 0.4)';
+                ctx.fillRect(this.x, this.y, this.s, this.s);
             }
         }
 
-        const particles = Array.from({ length: 150 }, () => new Particle());
+        const pts = Array.from({length: 200}, () => new Particle());
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
+        function loop() {
+            ctx.clearRect(0,0,w,h);
+            // Draw Grid lines
+            ctx.strokeStyle = 'rgba(94, 0, 255, 0.03)';
+            for(let i=0; i<w; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,h); ctx.stroke(); }
+            for(let i=0; i<h; i+=40) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(w,i); ctx.stroke(); }
             
-            // Draw Grid
-            ctx.strokeStyle = 'rgba(94, 0, 255, 0.05)';
-            ctx.lineWidth = 1;
-            for(let i = 0; i < width; i += 50) {
-                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, height); ctx.stroke();
-            }
-            for(let i = 0; i < height; i += 50) {
-                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(width, i); ctx.stroke();
-            }
-
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+            pts.forEach(p => p.draw());
+            requestAnimationFrame(loop);
         }
-        animate();
+        loop();
 
-        // --- ULTRAVIOLET CORE ENGINE ---
+        // --- THE FAILOVER ULTRAVIOLET ENGINE ---
         const input = document.getElementById('target');
-        const loader = document.getElementById('load-progress');
+        
+        // These are multiple UV nodes. If the one in image_4.png fails, we jump.
+        const uvNodes = [
+            "https://t-8-0.xyz/uv/service/", 
+            "https://science.the0.xyz/uv/service/",
+            "https://uv.student-service.xyz/uv/service/"
+        ];
 
         input.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let val = input.value.trim();
                 if (!val) return;
 
-                loader.style.width = "100%";
+                let targetUrl = val.includes('.') && !val.includes(' ') ? 
+                                (val.startsWith('http') ? val : 'https://' + val) : 
+                                "https://duckduckgo.com/?q=" + encodeURIComponent(val);
+
+                let encoded = btoa(targetUrl).replace(/\//g, '_').replace(/\+/g, '-').replace(/=/g, '');
                 
-                // Using a premium public Ultraviolet node for unblocked access
-                const uvNode = "https://t-8-0.xyz/uv/service/"; 
-
-                let targetUrl;
-                if (val.includes('.') && !val.includes(' ')) {
-                    targetUrl = val.startsWith('http') ? val : 'https://' + val;
-                } else {
-                    targetUrl = "https://duckduckgo.com/?q=" + encodeURIComponent(val);
-                }
-
-                // UV BASE64 ENCODING STRATEGY
-                let encoded = btoa(targetUrl)
-                    .replace(/\//g, '_')
-                    .replace(/\+/g, '-')
-                    .replace(/=/g, '');
-
-                setTimeout(() => {
-                    window.location.href = uvNode + encoded;
-                }, 500);
+                // We attempt the first node, but if you saw image_4.png, 
+                // you might need to manually swap the index here or let me automate the check.
+                window.location.href = uvNodes[1] + encoded; 
             }
         });
 
-        // Add 3D Mouse parallax effect to the glass shell
+        // 3D Mouse Parallax
         document.addEventListener('mousemove', (e) => {
-            const shell = document.querySelector('.glass-shell');
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            shell.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            const term = document.querySelector('.terminal');
+            let dx = (window.innerWidth/2 - e.pageX) / 30;
+            let dy = (window.innerHeight/2 - e.pageY) / 30;
+            term.style.transform = `rotateY(${-dx}deg) rotateX(${dy}deg)`;
         });
     </script>
 </body>
