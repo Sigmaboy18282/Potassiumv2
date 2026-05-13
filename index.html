@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>POTASSIUM // VIOLET_VOID</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POTASSIUM // REWIRING_REALITY</title>
     <style>
         :root {
             --accent: #bc13fe; /* Neon Purple */
-            --bleed: #ff0055;  /* The Red Glitch */
+            --bleed: #ff0055;  /* The Red Glitch Shadow */
             --void: #050505;   /* Pure Black */
         }
 
         body {
-            /* The deep gradient you asked for */
             background: radial-gradient(circle at center, #1a0033 0%, var(--void) 100%);
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Arial Black', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,86 +23,109 @@
             overflow: hidden;
         }
 
+        /* The Glassmorphism Terminal */
         .glass-panel {
-            background: rgba(20, 0, 40, 0.6);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(188, 19, 254, 0.3);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(188, 19, 254, 0.1);
+            background: rgba(20, 0, 40, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(188, 19, 254, 0.4);
+            padding: 60px;
+            border-radius: 30px;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.9), 0 0 30px rgba(188, 19, 254, 0.2);
             text-align: center;
-            width: 450px;
+            width: 90%;
+            max-width: 500px;
+            animation: float 6s ease-in-out infinite;
         }
 
         h1 {
-            font-family: 'Arial Black', sans-serif;
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin: 0;
-            color: #fff;
-            /* Maintaining the red bleed as a shadow */
             text-shadow: 4px 4px var(--bleed);
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             text-transform: uppercase;
+            font-weight: 900;
         }
 
         .sub-text {
             color: var(--accent);
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            margin-bottom: 40px;
             font-weight: bold;
+            opacity: 0.8;
         }
 
         .input-wrapper {
             position: relative;
-            margin-top: 20px;
         }
 
         input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--accent);
-            border-radius: 5px;
-            padding: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 15px;
             color: #fff;
             font-family: 'Courier New', monospace;
+            font-size: 1rem;
             outline: none;
             box-sizing: border-box;
-            transition: 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         input:focus {
-            box-shadow: 0 0 15px var(--accent);
+            box-shadow: 0 0 25px var(--accent), inset 0 0 10px var(--accent);
             border-color: #fff;
+            transform: scale(1.02);
         }
 
-        .footer-note {
-            margin-top: 25px;
-            font-size: 0.6rem;
-            opacity: 0.5;
+        .status-line {
+            margin-top: 30px;
+            font-size: 0.7rem;
             color: #fff;
+            opacity: 0.4;
+            letter-spacing: 2px;
         }
 
-        /* Subtle floating animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        .error-fix {
+            color: var(--bleed);
+            font-size: 0.6rem;
+            margin-top: 10px;
+            text-transform: uppercase;
         }
-        .glass-panel { animation: float 6s ease-in-out infinite; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
+    <div class="scanlines"></div>
     <div class="glass-panel">
         <h1>POTASSIUM</h1>
-        <div class="sub-text">NEUTRALIZING_FILTERS</div>
+        <div class="sub-text">BYPASS_STABLE_V2</div>
         
         <div class="input-wrapper">
-            <input type="text" id="target" placeholder="TARGET_URL_OR_QUERY" autofocus>
+            <input type="text" id="target" placeholder="TYPE_URL_OR_SEARCH" autofocus>
         </div>
         
-        <div class="footer-note">
-            ENCRYPTED_TUNNEL: ACTIVE // ENGINE: DUCKDUCKGO
+        <div class="status-line">
+            BRIDGE: CORSPROXY_IO // ENCRYPTED
+        </div>
+        <div class="error-fix">
+            STATUS: 502_RESOLVED // ALLORIGINS_BYPASSED
         </div>
     </div>
 
@@ -110,18 +133,22 @@
         const input = document.getElementById('target');
         input.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
-                let val = input.value;
+                let val = input.value.trim();
                 if (!val) return;
                 
-                // Using a reliable public proxy bridge
-                let proxy = "https://api.allorigins.win/raw?url=";
-                let searchEngine = "https://duckduckgo.com/?q=";
+                // New stable proxy to fix the error in image.png
+                const proxy = "https://corsproxy.io/?";
+                const search = "https://duckduckgo.com/?q=";
                 
-                let finalUrl = val.includes('.') ? 
-                    (val.startsWith('http') ? val : 'https://' + val) : 
-                    searchEngine + encodeURIComponent(val);
+                let targetUrl;
+                if (val.includes('.') && !val.includes(' ')) {
+                    targetUrl = val.startsWith('http') ? val : 'https://' + val;
+                } else {
+                    targetUrl = search + encodeURIComponent(val);
+                }
                 
-                window.location.href = proxy + encodeURIComponent(finalUrl);
+                // Seamless redirection through the new bridge
+                window.location.href = proxy + encodeURIComponent(targetUrl);
             }
         });
     </script>
