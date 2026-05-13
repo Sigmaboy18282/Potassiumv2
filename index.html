@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POTASSIUM // ULTRAVIOLET_RESURRECTION</title>
     <style>
-        /* 
-           THE ARCHITECTURE OF DEFIANCE
-           736 LINES OF INTEGRATED STYLING AND LOGIC
-        */
         :root {
             --uv-primary: #5e00ff;
             --uv-glow: #9d00ff;
@@ -25,7 +21,6 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             overflow: hidden; display: flex;
             justify-content: center; align-items: center;
-            cursor: crosshair;
         }
 
         /* --- THE HOLOGRAPHIC WEB --- */
@@ -40,6 +35,26 @@
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
             background-size: 100% 4px; z-index: 5; pointer-events: none;
         }
+
+        /* --- EMBEDDED VIEWPORT --- */
+        #proxy-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1000; background: var(--void);
+            display: none; flex-direction: column;
+        }
+
+        .proxy-header {
+            height: 50px; background: #0a001e; border-bottom: 1px solid var(--uv-primary);
+            display: flex; align-items: center; padding: 0 20px; gap: 20px;
+        }
+
+        .exit-btn {
+            background: var(--bleed); border: none; color: #fff;
+            padding: 5px 15px; border-radius: 5px; cursor: pointer;
+            font-weight: bold; font-size: 0.7rem; letter-spacing: 1px;
+        }
+
+        #proxy-frame { flex: 1; border: none; width: 100%; height: 100%; background: #fff; }
 
         /* --- THE FLOATING TERMINAL --- */
         .terminal {
@@ -66,18 +81,13 @@
             text-transform: uppercase; letter-spacing: 15px;
             font-weight: 900;
             text-shadow: 0 0 20px var(--uv-glow), 5px 5px var(--bleed);
-            filter: drop-shadow(0 0 10px var(--uv-primary));
         }
 
         .sub-text {
             color: var(--uv-glow); font-size: 0.7rem;
             letter-spacing: 7px; margin-bottom: 50px;
             text-transform: uppercase; font-weight: bold;
-            opacity: 0.8;
         }
-
-        /* --- THE SHADOW INPUT --- */
-        .input-box { position: relative; width: 100%; }
 
         input {
             width: 100%; background: rgba(0,0,0,0.7);
@@ -87,100 +97,67 @@
             text-align: center; border-radius: 4px;
         }
 
-        input:focus {
-            border-bottom-color: var(--bleed);
-            box-shadow: 0 10px 30px rgba(157, 0, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .status-line {
-            margin-top: 40px; font-size: 0.6rem;
-            color: var(--bleed); font-weight: bold;
-            letter-spacing: 2px; text-transform: uppercase;
-        }
-
-        .ambient-stats {
-            display: flex; justify-content: space-between;
-            margin-top: 20px; opacity: 0.4; font-size: 0.5rem;
-            font-family: monospace;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateX(0); }
-            50% { transform: translateY(-15px) rotateX(2deg); }
-        }
+        input:focus { border-bottom-color: var(--bleed); transform: translateY(-5px); }
 
         .active-terminal { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     </style>
 </head>
 <body>
     <canvas id="hologram-canvas"></canvas>
     <div class="scanlines"></div>
 
-    <div class="terminal active-terminal">
+    <!-- PERSISTENT PROXY VIEWPORT -->
+    <div id="proxy-container">
+        <div class="proxy-header">
+            <button class="exit-btn" onclick="closeProxy()">DISCONNECT</button>
+            <div id="proxy-status" style="font-size: 0.6rem; color: var(--uv-primary); font-family: monospace;">TUNNEL_STABLE // 0_LEAKS</div>
+        </div>
+        <iframe id="proxy-frame" src=""></iframe>
+    </div>
+
+    <div class="terminal active-terminal" id="main-ui">
         <h1>POTASSIUM</h1>
-        <div class="sub-text">GHOST_RELAY_INITIATED</div>
+        <div class="sub-text">EMBEDDED_DARK_MODE</div>
         
         <div class="input-box">
             <input type="text" id="target" placeholder="TYPE_DESTINATION" autofocus autocomplete="off">
         </div>
 
-        <div class="status-line">BYPASSING_IMAGE_5_LOCKS // ENCRYPTED</div>
-        
-        <div class="ambient-stats">
-            <span>SIG: 99.8%</span>
-            <span>LYRIA_LINK: STABLE</span>
-            <span>VOID: ACTIVE</span>
-        </div>
+        <div style="margin-top: 40px; font-size: 0.6rem; color: var(--bleed); font-weight: bold; letter-spacing: 2px;">STAY_IN_THE_VOID // NO_NEW_TABS</div>
     </div>
 
     <script>
-        // --- HOLOGRAPHIC BACKGROUND GENERATOR ---
+        // --- HOLOGRAPHIC BACKGROUND ---
         const canvas = document.getElementById('hologram-canvas');
         const ctx = canvas.getContext('2d');
         let w, h;
-
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize);
         resize();
 
         class Particle {
             constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * w;
-                this.y = Math.random() * h;
-                this.size = Math.random() * 3;
-                this.speed = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.y -= this.speed;
-                if (this.y < 0) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(157, 0, 255, 0.3)';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
+            reset() { this.x = Math.random() * w; this.y = Math.random() * h; this.size = Math.random() * 3; this.speed = Math.random() * 0.5 + 0.1; }
+            update() { this.y -= this.speed; if (this.y < 0) this.reset(); }
+            draw() { ctx.fillStyle = 'rgba(157, 0, 255, 0.3)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-
-        const particles = Array.from({ length: 100 }, () => new Particle());
+        const particles = Array.from({ length: 80 }, () => new Particle());
 
         function animate() {
             ctx.clearRect(0, 0, w, h);
-            // Draw Grid
             ctx.strokeStyle = 'rgba(94, 0, 255, 0.05)';
             for(let i=0; i<w; i+=60) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
-            for(let i=0; i<h; i+=60) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
-            
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // --- THE UNBREAKABLE ENGINE ---
+        // --- THE EMBED ENGINE ---
         const input = document.getElementById('target');
+        const proxyContainer = document.getElementById('proxy-container');
+        const proxyFrame = document.getElementById('proxy-frame');
+
         input.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let val = input.value.trim();
@@ -190,23 +167,31 @@
                 if (val.includes('.') && !val.includes(' ')) {
                     destination = val.startsWith('http') ? val : 'https://' + val;
                 } else {
-                    destination = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val);
+                    // kae=d forces DuckDuckGo into Dark Mode
+                    destination = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val) + "&kae=d";
                 }
 
-                // GHOST BRIDGE: 
-                // We bypass the "Server Not Found" error in image_5.png 
-                // by using a Google Mirror relay. This is almost impossible to block.
+                // GHOST BRIDGE RELAY
                 const relay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
                 
-                window.location.href = relay + encodeURIComponent(destination);
+                // Set the frame source and reveal the container
+                proxyFrame.src = relay + encodeURIComponent(destination);
+                proxyContainer.style.display = 'flex';
             }
         });
 
-        // Interactive 3D Parallax
+        function closeProxy() {
+            proxyContainer.style.display = 'none';
+            proxyFrame.src = ""; // Kill the site process
+            input.value = "";
+            input.focus();
+        }
+
+        // Parallax Effect
         document.addEventListener('mousemove', (e) => {
-            const term = document.querySelector('.terminal');
-            const x = (window.innerWidth / 2 - e.pageX) / 35;
-            const y = (window.innerHeight / 2 - e.pageY) / 35;
+            const term = document.getElementById('main-ui');
+            const x = (window.innerWidth / 2 - e.pageX) / 40;
+            const y = (window.innerHeight / 2 - e.pageY) / 40;
             term.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
         });
     </script>
