@@ -2,81 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>POTASSIUM // SCRAMJET_ENGINE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POTASSIUM // REAL_SCRAMJET</title>
     <style>
         :root { --p: #5e00ff; --s: #ff0055; --v: #020005; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--v); color: #fff; font-family: sans-serif; overflow: hidden; }
         
-        /* PERSISTENT SCRAMJET VIEWPORT */
-        #scramjet-vp { position: fixed; inset: 0; z-index: 9999; background: var(--v); display: none; flex-direction: column; }
-        .header { height: 48px; background: #0a001e; border-bottom: 1px solid var(--p); display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
-        .btn { background: var(--s); border: none; color: white; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 10px; }
+        #viewport { position: fixed; inset: 0; z-index: 9999; background: var(--v); display: none; flex-direction: column; }
+        .nav { height: 48px; background: #0a001e; border-bottom: 1px solid var(--p); display: flex; align-items: center; padding: 0 15px; justify-content: space-between; }
+        .b { background: var(--s); border: none; color: white; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 10px; }
+        
         iframe { flex: 1; border: none; background: #fff; }
 
-        /* THE TERMINAL UI */
-        .main { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .terminal { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         h1 { font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 25px var(--p); margin: 0; font-weight: 900; }
         input { width: 85%; max-width: 500px; background: #000; border: 2px solid var(--p); padding: 22px; color: #fff; border-radius: 12px; outline: none; margin-top: 20px; font-size: 1.2rem; text-align: center; }
         input:focus { border-color: var(--s); box-shadow: 0 0 25px var(--p); }
-        .status { margin-top: 25px; font-size: 0.6rem; color: var(--p); letter-spacing: 4px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="scramjet-vp">
-        <div class="header">
-            <button class="btn" onclick="exit()">DISCONNECT</button>
-            <div id="log" style="color:var(--p); font-family:monospace; font-size:9px;">ENGINE: SCRAMJET_V1_STABLE</div>
-            <button class="btn" style="background:#444" onclick="force()">FORCE_BYPASS</button>
+    <div id="viewport">
+        <div class="nav">
+            <button class="b" onclick="disconnect()">DISCONNECT</button>
+            <div id="status" style="color:var(--p); font-family:monospace; font-size:9px;">SCRAMJET_PROTOCOL_V6</div>
+            <button class="b" style="background:#444" onclick="location.reload()">REBOOT</button>
         </div>
-        <iframe id="ifr"></iframe>
+        <iframe id="scramjet-frame"></iframe>
     </div>
 
-    <div class="main">
+    <div class="terminal">
         <h1>POTASSIUM</h1>
-        <div style="font-size:0.6rem; color:var(--s); letter-spacing:8px; margin-bottom:5px;">SCRAMJET_PROTOCOL</div>
-        <input type="text" id="ui" placeholder="URL_OR_SEARCH" autofocus autocomplete="off">
-        <div class="status">SPOOFING_HEADERS // BREAKING_CAPTCHA_LOOPS</div>
+        <div style="font-size:0.6rem; color:var(--s); letter-spacing:8px; margin-bottom:5px;">VOID_ENGINE</div>
+        <input type="text" id="target" placeholder="SEARCH_OR_URL" autofocus>
     </div>
 
+    <!-- YOU MUST HAVE THESE FILES ON GITHUB FOR THIS TO WORK -->
+    <script src="scramjet.config.js"></script>
+    <script src="scramjet.codecs.js"></script>
+    
     <script>
-        const input = document.getElementById('ui');
-        const vp = document.getElementById('scramjet-vp');
-        const ifr = document.getElementById('ifr');
+        const input = document.getElementById('target');
+        const view = document.getElementById('viewport');
+        const frame = document.getElementById('scramjet-frame');
 
-        input.onkeypress = (e) => {
+        // Scramjet Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js', { 
+                scope: '/potassium-v3/' // Change this to your folder name on GitHub
+            });
+        }
+
+        input.onkeypress = async (e) => {
             if (e.key === 'Enter') {
                 let val = input.value.trim();
                 if (!val) return;
 
-                let target;
-                if (val.includes('.') && !val.includes(' ')) {
-                    target = val.startsWith('http') ? val : 'https://' + val;
-                } else {
-                    target = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val);
-                }
+                let url = val.includes('.') && !val.includes(' ') ? 
+                          (val.startsWith('http') ? val : 'https://' + val) : 
+                          "https://duckduckgo.com/html/?q=" + encodeURIComponent(val);
 
-                vp.style.display = 'flex';
+                view.style.display = 'flex';
                 
-                // --- THE ACTUAL SCRAMJET GATEWAY ---
-                // This routes through a public worker that handles the heavy rewriting
-                const scramjet_gateway = "https://worker-crimson-dawn-3844.sigmaboy18282.workers.dev/proxy?url="; 
-                // Fallback relay if worker is down
-                const relay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
-
-                ifr.src = relay + encodeURIComponent(target);
-                document.getElementById('log').innerText = "TUNNELING: " + val.toUpperCase();
+                // Real Scramjet Encoding Logic
+                try {
+                    const encodedUrl = __scramjet$config.prefix + __scramjet$codecs.xor.encode(url);
+                    frame.src = encodedUrl;
+                } catch (err) {
+                    // Fallback if Scramjet scripts aren't loaded yet
+                    console.log("Scramjet Engine not loaded. Using fallback.");
+                    frame.src = "https://translate.google.com/translate?sl=auto&tl=en&u=" + encodeURIComponent(url);
+                }
             }
         };
 
-        function force() {
-            const current = ifr.src;
-            ifr.src = "about:blank";
-            setTimeout(() => { ifr.src = current + "&anno=2"; }, 100);
+        function disconnect() {
+            view.style.display = 'none';
+            frame.src = "about:blank";
+            input.value = "";
         }
-
-        function exit() { vp.style.display = 'none'; ifr.src = ""; input.value = ""; }
     </script>
 </body>
 </html>
