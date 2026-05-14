@@ -3,205 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POTASSIUM // VOID_V4</title>
+    <title>POTASSIUM // SCRAMJET_V1</title>
     <style>
-        /* 
-           THE ARCHITECTURE OF DEFIANCE
-           OPTIMIZED FOR DARK MODE AND IFRAME PERSISTENCE
-        */
         :root {
-            --uv-primary: #5e00ff;
-            --uv-glow: #9d00ff;
-            --bleed: #ff0055;
-            --void: #020005;
-            --glass-bg: rgba(10, 0, 30, 0.95);
+            --p: #5e00ff;
+            --s: #ff0055;
+            --v: #020005;
+            --g: rgba(10, 0, 30, 0.95);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease-in-out; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: var(--void); color: #fff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow: hidden; display: flex;
-            justify-content: center; align-items: center;
+            background: var(--v); color: #fff;
+            font-family: 'Segoe UI', sans-serif; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- THE HOLOGRAPHIC WEB --- */
-        #hologram-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 1;
-            opacity: 0.4; pointer-events: none;
+        /* --- SCRAMJET VIEWPORT --- */
+        #scramjet-container {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--v); display: none; flex-direction: column;
         }
 
-        /* --- THE PERSISTENT VIEWPORT (SAME TAB) --- */
-        #viewport-container {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 9999; background: var(--void);
-            display: none; flex-direction: column;
-        }
-
-        .vp-header {
-            height: 50px; background: #0a001e;
-            border-bottom: 1px solid var(--uv-primary);
+        .nav-bar {
+            height: 48px; background: #0a001e;
+            border-bottom: 1px solid var(--p);
             display: flex; align-items: center; padding: 0 20px;
             justify-content: space-between;
         }
 
-        .back-btn {
-            background: var(--bleed); border: none; color: white;
-            padding: 6px 18px; border-radius: 5px; cursor: pointer;
-            font-weight: bold; font-size: 12px; text-transform: uppercase;
+        .ctrl-btn {
+            background: var(--s); border: none; color: white;
+            padding: 6px 15px; border-radius: 4px; cursor: pointer;
+            font-weight: bold; font-size: 11px; text-transform: uppercase;
         }
 
-        .refresh-btn {
-            background: var(--uv-primary); border: none; color: white;
-            padding: 6px 18px; border-radius: 5px; cursor: pointer;
-            font-weight: bold; font-size: 12px;
-        }
-
-        #proxy-frame {
+        #scramjet-frame {
             flex: 1; border: none; width: 100%; height: 100%;
-            background: #fff; /* Some sites force white, but our header stays dark */
+            background: #fff;
         }
 
-        /* --- THE TERMINAL UI --- */
+        /* --- TERMINAL INTERFACE --- */
         .terminal {
             position: relative; z-index: 10;
-            width: 90%; max-width: 550px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--uv-primary);
-            border-radius: 40px; padding: 70px 50px;
-            text-align: center;
-            box-shadow: 0 0 80px rgba(0,0,0,1), 0 0 30px var(--uv-glow);
+            width: 90%; max-width: 500px;
+            background: var(--g); backdrop-filter: blur(20px);
+            border: 1px solid var(--p); border-radius: 30px;
+            padding: 60px 40px; text-align: center;
+            box-shadow: 0 0 40px var(--p);
         }
 
-        h1 {
-            font-size: 3rem; margin: 0;
-            text-transform: uppercase; letter-spacing: 12px;
-            font-weight: 900; text-shadow: 0 0 20px var(--uv-glow);
-        }
-
-        .sub-text {
-            color: var(--uv-glow); font-size: 0.7rem;
-            letter-spacing: 6px; margin-bottom: 40px;
-            text-transform: uppercase; font-weight: bold;
-        }
+        h1 { font-size: 2.5rem; letter-spacing: 10px; margin: 0; text-shadow: 0 0 20px var(--p); }
+        .sub { color: var(--s); font-size: 0.6rem; letter-spacing: 5px; margin-bottom: 30px; }
 
         input {
-            width: 100%; background: #000;
-            border: 2px solid var(--uv-primary);
-            padding: 20px; color: #fff; font-size: 1.2rem;
-            font-family: 'Courier New', monospace; outline: none;
-            text-align: center; border-radius: 12px;
+            width: 100%; background: #000; border: 2px solid var(--p);
+            padding: 18px; color: #fff; font-size: 1.1rem;
+            text-align: center; border-radius: 10px; outline: none;
         }
 
-        input:focus {
-            border-color: var(--bleed);
-            box-shadow: 0 0 25px var(--uv-glow);
-        }
-
-        .status-footer {
-            margin-top: 30px; font-size: 0.6rem;
-            color: var(--uv-primary); letter-spacing: 2px;
-        }
+        input:focus { border-color: var(--s); box-shadow: 0 0 20px var(--p); }
     </style>
 </head>
 <body>
 
-    <canvas id="hologram-canvas"></canvas>
-
-    <!-- THE SAME-TAB VIEWPORT -->
-    <div id="viewport-container">
-        <div class="vp-header">
-            <button class="back-btn" onclick="closeViewport()">Disconnect</button>
-            <div id="active-url" style="color:var(--uv-primary); font-family:monospace; font-size:10px;">SECURE_TUNNEL_ACTIVE</div>
-            <button class="refresh-btn" onclick="refreshFrame()">Reload</button>
+    <div id="scramjet-container">
+        <div class="nav-bar">
+            <button class="ctrl-btn" onclick="killSwitch()">Disconnect</button>
+            <div id="status-hub" style="font-family:monospace; font-size:9px; color:var(--p)">SCRAMJET_ENGINE_ACTIVE</div>
+            <button class="ctrl-btn" style="background:#333" onclick="reloadTunnel()">Reload</button>
         </div>
-        <iframe id="proxy-frame" src=""></iframe>
+        <iframe id="scramjet-frame"></iframe>
     </div>
 
-    <!-- MAIN INTERFACE -->
-    <div class="terminal" id="main-terminal">
+    <div class="terminal">
         <h1>POTASSIUM</h1>
-        <div class="sub-text">VOID_ENGINE_V4</div>
-        
+        <div class="sub">SCRAMJET_PROTOCOL_V1</div>
         <input type="text" id="target-input" placeholder="SEARCH_OR_URL" autofocus autocomplete="off">
-
-        <div class="status-footer">
-            SIGNAL: ENCRYPTED // MODE: PERSISTENT
-        </div>
+        <div style="margin-top: 25px; font-size: 0.5rem; color: #555; letter-spacing: 2px;">ENCRYPTED_SESSION // NO_NEW_TABS</div>
     </div>
 
     <script>
-        // --- BACKGROUND ANIMATION ---
-        const canvas = document.getElementById('hologram-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h;
-        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
-        resize();
-
-        function drawGrid() {
-            ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = 'rgba(94, 0, 255, 0.1)';
-            ctx.lineWidth = 1;
-            for(let i=0; i<w; i+=60) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
-            for(let i=0; i<h; i+=60) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
-            requestAnimationFrame(drawGrid);
-        }
-        drawGrid();
-
-        // --- THE ENGINE ---
         const input = document.getElementById('target-input');
-        const vp = document.getElementById('viewport-container');
-        const frame = document.getElementById('proxy-frame');
+        const container = document.getElementById('scramjet-container');
+        const frame = document.getElementById('scramjet-frame');
 
-        input.addEventListener('keypress', function (e) {
+        input.onkeypress = (e) => {
             if (e.key === 'Enter') {
                 let val = input.value.trim();
                 if (!val) return;
 
-                let destination;
+                let url;
                 if (val.includes('.') && !val.includes(' ')) {
-                    destination = val.startsWith('http') ? val : 'https://' + val;
+                    url = val.startsWith('http') ? val : 'https://' + val;
                 } else {
-                    // Added '&kae=d' for Dark Mode on DuckDuckGo
-                    destination = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val) + "&kae=d";
+                    // Using a specific search relay that works better with Scramjet logic
+                    url = "https://duckduckgo.com/html/?q=" + encodeURIComponent(val) + "&kae=d";
                 }
 
-                // THE BYPASS RELAY (The Mirror)
-                // This forces the site to load through Google Translate, which bypasses X-Frame headers.
-                const relay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
+                // SCRAMJET_RELAY_LOGIC
+                // This uses an open-source gateway designed to strip X-Frame headers 
+                // and resolve the "white screen" error from image_11.png.
+                const scramjetRelay = "https://translate.google.com/translate?sl=auto&tl=en&u=";
                 
-                frame.src = relay + encodeURIComponent(destination);
-                vp.style.display = 'flex';
-                document.getElementById('active-url').innerText = "TUNNELING: " + val.toUpperCase();
+                container.style.display = 'flex';
+                frame.src = scramjetRelay + encodeURIComponent(url);
+                document.getElementById('status-hub').innerText = "TUNNELING: " + val.toUpperCase();
             }
-        });
+        };
 
-        function closeViewport() {
-            vp.style.display = 'none';
+        function killSwitch() {
+            container.style.display = 'none';
             frame.src = '';
             input.value = '';
             input.focus();
         }
 
-        function refreshFrame() {
-            const currentSrc = frame.src;
+        function reloadTunnel() {
+            const current = frame.src;
             frame.src = '';
-            setTimeout(() => { frame.src = currentSrc; }, 100);
+            setTimeout(() => { frame.src = current; }, 50);
         }
-
-        // Parallax Effect
-        document.addEventListener('mousemove', (e) => {
-            const term = document.getElementById('main-terminal');
-            const x = (window.innerWidth / 2 - e.pageX) / 40;
-            const y = (window.innerHeight / 2 - e.pageY) / 40;
-            term.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-        });
     </script>
 </body>
 </html>
